@@ -67,7 +67,7 @@ if __name__ == '__main__':
     import argparse
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--env',type=str, default='HumanoidPyBulletEnv-v0')
+    parser.add_argument('--env',type=str, default='Walker2DPyBulletEnv-v0')
     parser.add_argument('--load_model',type=str, default=None)
     parser.add_argument('--total_timesteps', type=float, default=2e8)
     parser.add_argument('--eval_freq', type=int, default=20000)
