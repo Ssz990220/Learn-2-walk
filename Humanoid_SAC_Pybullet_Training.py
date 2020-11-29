@@ -16,7 +16,7 @@ from stable_baselines.bench import Monitor
 from stable_baselines_utils import *
 
 def train(env_name, num_time_steps, policy_kwargs, eval_ep, eval_freq, ckpt_freq, load_model=None):
-    env=gym.make(env_name)
+    env = gym.make(env_name)
     # env.render()
     env_ = gym.make(env_name)
 
@@ -63,7 +63,7 @@ if __name__ == '__main__':
     import argparse
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--env',type=str, default='Walker2DPyBulletEnv-v0')
+    parser.add_argument('--env',type=str, default='HumanoidPyBulletEnv-v0')
     parser.add_argument('--load_model',type=str, default=None)
     parser.add_argument('--total_timesteps', type=float, default=2e6)
     parser.add_argument('--eval_freq', type=int, default=20000)

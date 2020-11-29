@@ -45,7 +45,7 @@ def train(env_name, num_time_steps, policy_kwargs, eval_ep, eval_freq, ckpt_freq
     #          Logging         #
     ############################
     if rank==0:
-        logger.configure()
+        logger.configure(path)
         config = {}
         config['load']=[{'load_model':load_model}]
         config['eval']=[{'eval_freq':eval_freq, 'eval_ep':eval_ep}]
@@ -54,7 +54,7 @@ def train(env_name, num_time_steps, policy_kwargs, eval_ep, eval_freq, ckpt_freq
         with open('./run/' + model_name + '/' + model_name + '.txt', 'w+') as outfile:
             json.dump(config, outfile, indent=4)
     else:
-        logger.configure(format_strs=[])
+        logger.configure(path,format_strs=[])
     ############################
     #            run           #
     ############################
