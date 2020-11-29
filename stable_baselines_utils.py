@@ -4,8 +4,7 @@ from typing import Union, Optional, Callable, Tuple, List
 import gym
 import pybulletgym
 import numpy as np
-import wandb
-# from rrc_simulation.grasping_envs.SlideEnv import PickEnv
+# import wandb
 from stable_baselines.common.callbacks import BaseCallback, EvalCallback
 from stable_baselines.common.vec_env import sync_envs_normalization, VecEnv
 from mpi4py import MPI
@@ -75,7 +74,64 @@ class EvalCallback_wandb(EvalCallback):
 
         return True
 
+class EvalCallback_wandb_SAC(EvalCallback_wandb):
+    def __init__(self, eval_env: Union[gym.Env, VecEnv],
+                 callback_on_new_best: Optional[BaseCallback] = None,
+                 n_eval_episodes: int = 5,
+                 eval_freq: int = 10000,
+                 log_path: str = None,
+                 best_model_save_path: str = None,
+                 deterministic: bool = True,
+                 render: bool = False,
+                 verbose: int = 1):
+        super(EvalCallback_wandb_SAC, self).__init__(eval_env=eval_env, callback_on_new_best=callback_on_new_best,
+                                                 n_eval_episodes=n_eval_episodes, eval_freq=eval_freq,
+                                                 log_path=log_path,
+                                                 best_model_save_path=best_model_save_path, deterministic=deterministic,
+                                                 render=render,
+                                                 verbose=verbose)
 
+    def _on_step(self) -> bool:
+        if self.eval_freq > 0 and self.n_calls % self.eval_freq == 0:
+            # Sync training and eval env if there is VecNormalize
+            sync_envs_normalization(self.training_env, self.eval_env)
+
+            episode_rewards, episode_lengths = evaluate_policy(self.model, self.eval_env,
+                                                               n_eval_episodes=self.n_eval_episodes,
+                                                               render=self.render,
+                                                               deterministic=self.deterministic,
+                                                               return_episode_rewards=True)
+            if self.log_path is not None:
+                self.evaluations_timesteps.append(self.num_timesteps)
+                self.evaluations_results.append(episode_rewards)
+                self.evaluations_length.append(episode_lengths)
+                np.savez(self.log_path, timesteps=self.evaluations_timesteps,
+                         results=self.evaluations_results, ep_lengths=self.evaluations_length)
+
+            mean_reward, std_reward = np.mean(episode_rewards), np.std(episode_rewards)
+            mean_ep_length, std_ep_length = np.mean(episode_lengths), np.std(episode_lengths)
+            # Keep track of the last evaluation, useful for classes that derive from this callback
+            self.last_mean_reward = mean_reward
+
+            if self.verbose > 0:
+                print("Eval num_timesteps={}, "
+                      "episode_reward={:.2f} +/- {:.2f}".format(self.num_timesteps, mean_reward, std_reward))
+                print("Episode length: {:.2f} +/- {:.2f}".format(mean_ep_length, std_ep_length))
+
+            if mean_reward > self.best_mean_reward:
+                if self.verbose > 0:
+                    print("New best mean reward!")
+                if self.best_model_save_path is not None:
+                    self.model.save(os.path.join(self.best_model_save_path, 'best_model'))
+                self.best_mean_reward = mean_reward
+                # Trigger callback if needed
+                if self.callback is not None:
+                    return self._on_event()
+        else:
+            pass
+
+        return True
+       
 def evaluate_policy(
         model: "BaseRLModel",
         env: Union[gym.Env, VecEnv],
@@ -113,9 +169,9 @@ def evaluate_policy(
         episode_lengths.append(episode_length)
 
     mean_episode_length = np.mean(episode_lengths)
-    wandb.log({'mean Episode Length': mean_episode_length})
+    # wandb.log({'mean Episode Length': mean_episode_length})
     mean_reward = np.mean(episode_rewards)
-    wandb.log({'reward': mean_reward})
+    # wandb.log({'reward': mean_reward})
     std_reward = np.std(episode_rewards)
 
     if reward_threshold is not None:
