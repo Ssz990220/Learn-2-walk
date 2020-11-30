@@ -56,7 +56,7 @@ def train(env_name, num_time_steps, policy_kwargs, eval_ep, eval_freq, ckpt_freq
     # policy_kwargs = dict(net_arch=[128, dict(vf=[256], pi=[16])])
     model = SAC(MlpPolicy, env, verbose=1)
     model.learn(total_timesteps=int(num_time_steps), log_interval=20, callback=callback)
-    model.save("sac_sliding")
+    model.save(path+"SAC_Humanoid")
 
 
 if __name__ == '__main__':
