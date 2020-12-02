@@ -6,7 +6,7 @@ import time
 
 if __name__ == '__main__':
     env = gym.make('Walker2DPyBulletEnv-v0')
-    model = SAC.load("_7880000_steps")
+    model = SAC.load("Walker2D_Faster_SAC")
     env.render()
     ob = env.reset()
     reward = 0
