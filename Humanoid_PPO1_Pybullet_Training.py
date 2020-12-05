@@ -12,8 +12,9 @@ from mpi4py import MPI
 from stable_baselines import logger
 from stable_baselines.common.callbacks import CallbackList, CheckpointCallback
 from stable_baselines_utils import *
+from stable_baselines.bench import Monitor
 
-def train(env_name, num_time_steps, policy_kwargs, eval_ep, eval_freq, ckpt_freq, load_model=None):
+def train(env_name, num_time_steps, eval_ep, eval_freq, ckpt_freq, load_model=None):
     env=gym.make(env_name)
     env_ = gym.make(env_name)
     rank = MPI.COMM_WORLD.Get_rank()
@@ -24,7 +25,8 @@ def train(env_name, num_time_steps, policy_kwargs, eval_ep, eval_freq, ckpt_freq
     model_name = env_name + '_PPO1_' + today + current_time
     Path('./run/'+model_name).mkdir(parents=True, exist_ok=True)
     path = os.path.join(os.path.dirname(__file__), './run/' + model_name)
-
+    if rank == 0:
+        env = Monitor(env, filename=path)
 
     ############################
     #         callback         #
@@ -39,7 +41,7 @@ def train(env_name, num_time_steps, policy_kwargs, eval_ep, eval_freq, ckpt_freq
     if load_model:
         model = PPO1.load(env=env, load_path=load_model)
     else:
-        model = PPO1(MlpPolicy, env, verbose=1, policy_kwargs=policy_kwargs)
+        model = PPO1(MlpPolicy, env, verbose=1, gamma = 0.995, clip_param=0.2, entcoeff=1.0, lam = 0.95, optim_epochs=20,optim_batchsize=32768, timesteps_per_actorbatch=320000)
 
     ############################
     #          Logging         #
@@ -50,7 +52,6 @@ def train(env_name, num_time_steps, policy_kwargs, eval_ep, eval_freq, ckpt_freq
         config['load']=[{'load_model':load_model}]
         config['eval']=[{'eval_freq':eval_freq, 'eval_ep':eval_ep}]
         config['ckpt']=[{'ckpt_freq':ckpt_freq}]
-        config['policy']=[{'policy_network':policy_kwargs}]
         with open('./run/' + model_name + '/' + model_name + '.txt', 'w+') as outfile:
             json.dump(config, outfile, indent=4)
     else:
@@ -60,7 +61,7 @@ def train(env_name, num_time_steps, policy_kwargs, eval_ep, eval_freq, ckpt_freq
     ############################
    
     model.learn(total_timesteps=int(num_time_steps), callback=callback)
-    model.save(path+'/finish')
+    model.save(path+'/'+model_name)
 
 
 if __name__ == '__main__':
@@ -69,7 +70,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--env',type=str, default='HumanoidPyBulletEnv-v0')
     parser.add_argument('--load_model',type=str, default=None)
-    parser.add_argument('--n', type=float, default=2e8)
+    parser.add_argument('--nsteps', type=float, default=4e8)
     parser.add_argument('--eval_freq', type=int, default=20000)
     parser.add_argument('--eval_ep', type=int, default=20)
     parser.add_argument('--ckpt_freq', type=int, default=5000)
@@ -81,6 +82,6 @@ if __name__ == '__main__':
     #   wandb.init(project='Big_Data_Project')
     # print(args.load_model)
 
-    train(env_name=args.env, num_time_steps=args.n, policy_kwargs=None,
+    train(env_name=args.env, num_time_steps=args.nsteps,
             eval_ep=args.eval_ep, eval_freq=args.eval_freq, ckpt_freq=args.ckpt_freq)
             # load_model=str(args.load_model))
