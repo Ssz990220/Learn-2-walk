@@ -3,7 +3,7 @@ ___
 
 ### Learning Bipedal With Deep Reinforcement Learning
 
-** Patch for PybulletGym
+Patch for PybulletGym
 Change the following code to fix the camera in pybullet
 
 ```python
