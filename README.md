@@ -1,5 +1,4 @@
 # Big Data and Machine Intelligence
-
 ___
 
 ### Learning Bipedal With Deep Reinforcement Learning
@@ -16,7 +15,7 @@ if self.isRender:
 
 ## line 125 in class Camera
     def __init__(self):
-		self._p = None      # replace the return line with this
+	self._p = None      # replace the return line with this
 ```
 To enable camera following in **HumanoidPyBulletEnv-v0**, do the following changes:
 ```python
