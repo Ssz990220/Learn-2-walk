@@ -1,11 +1,34 @@
 # Big Data and Machine Intelligence
-### Learning Bipedal With Deep Reinforcement Learning
+Learning Bipedal With Deep Reinforcement Learning
+## Environment in this project
+**numpy and cloudpickle version should be matched if you want to use the pretrained model**
+* Stable-baselines Environment:
+  * python==3.7.9
+  * numpy==1.19.2   
+  * cloudpickle==1.16.0
+  * tensorflow==1.14
+  * [pybulletgym](https://github.com/benelot/pybullet-gym)
+  * [stable-baselines](https://stable-baselines.readthedocs.io/)
+* rllib environment:
+  * python==3.7.9
+  * rllib
+  * tensorflow==2.1.0
+  * pytorch==1.7.0
+  * numpy==1.19.2
+  * cloudpickle==1.16.0
+## Parameters for training
+We trained two environment(Walker2D & Humanoid) with SAC (stable-baselines) and PPO (rllib).
 
-Patch for PybulletGym
-Change the following code to fix the camera in pybullet
+Walker2D is trained with default parameter.
+
+Humanoid is trained with [recommended parameter](https://github.com/ray-project/ray/blob/master/rllib/tuned_examples/ppo/humanoid-ppo-gae.yaml).
+
+## Patch for PybulletGym
+---
+Change the following code to fix the camera class in pybulletgym
 
 ```python
-## env/roboschool/envs/env_bases.py
+## pybulletgym/env/roboschool/envs/env_bases.py
 ## line 50 to 52
 if self.isRender:
     self._p = bullet_client.BulletClient(connection_mode=pybullet.GUI)
@@ -17,7 +40,7 @@ def __init__(self):
 ```
 To enable camera following in **HumanoidPyBulletEnv-v0**, do the following changes:
 ```python
-## in envs/roboschool/envs/locomotion/walker_base_end.py
+## in pybulletgym/envs/roboschool/envs/locomotion/walker_base_end.py
 ## line 111 in step()
     self.HUD(state, a, done)
     self.reward += sum(self.rewards)
