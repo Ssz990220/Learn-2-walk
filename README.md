@@ -1,6 +1,4 @@
 # Big Data and Machine Intelligence
-___
-
 ### Learning Bipedal With Deep Reinforcement Learning
 
 Patch for PybulletGym
