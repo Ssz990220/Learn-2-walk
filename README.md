@@ -12,8 +12,8 @@ if self.isRender:
     self.camera._p = self._p # this line is added to sync the pybullet server
 
 ## line 125 in class Camera
-    def __init__(self):
-	self._p = None      # replace the return line with this
+def __init__(self):
+    self._p = None      # replace the return line with this
 ```
 To enable camera following in **HumanoidPyBulletEnv-v0**, do the following changes:
 ```python
