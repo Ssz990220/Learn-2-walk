@@ -24,7 +24,6 @@ Walker2D is trained with default parameter.
 Humanoid is trained with [recommended parameter](https://github.com/ray-project/ray/blob/master/rllib/tuned_examples/ppo/humanoid-ppo-gae.yaml).
 
 ## Patch for PybulletGym
----
 Change the following code to fix the camera class in pybulletgym
 
 ```python
