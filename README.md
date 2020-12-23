@@ -12,10 +12,11 @@ Learning Bipedal With Deep Reinforcement Learning
 * rllib environment:
   * python==3.7.9
   * rllib
-  * tensorflow==2.1.0
+  * tensorflow==2.3.0
   * pytorch==1.7.0
   * numpy==1.19.2
   * cloudpickle==1.16.0
+  * [pybulletgym](https://github.com/benelot/pybullet-gym)
 ## Parameters for training
 We trained two environment(Walker2D & Humanoid) with SAC (stable-baselines) and PPO (rllib).
 
@@ -44,4 +45,6 @@ To enable camera following in **HumanoidPyBulletEnv-v0**, do the following chang
     self.HUD(state, a, done)
     self.reward += sum(self.rewards)
     self.camera_adjust()        # add this line
+## line155 in function 'camera_adjust'
+    x, y, z = self.robot.body_xyz
 ```
