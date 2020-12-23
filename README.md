@@ -60,6 +60,6 @@ To change the background in the scene, which makes it easier to view how fast th
    filename = os.path.join(os.path.dirname(__file__), "..", "..", "assets", "scenes", "stadium", "stadium.sdf")
 ## in pybulletgym/envs/roboschool/envs/locomotion/walker_base_end.py
 ## line 49, replace the original line with this:
-   foot_ground_object_names = set(["link_d0","link_d1","link_d1"])
+   foot_ground_object_names = set(["link_d0","link_d1","link_d2"])
 ```
 You are all set!
