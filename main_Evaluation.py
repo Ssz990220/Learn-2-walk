@@ -1,6 +1,7 @@
 import gym
 import pybulletgym
 import time
+import os
 
 if __name__ == '__main__':
     import argparse
@@ -9,6 +10,8 @@ if __name__ == '__main__':
     parser.add_argument('--alg',type=str)
     parser.add_argument('--file', type=str)
     args = parser.parse_args()
+    ckpt_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),args.file)
+    print(ckpt_path)
 
     if args.env == 'w' or args.env == 'Walker2DPyBulletEnv-v0': 
         env = gym.make('Walker2DPyBulletEnv-v0')

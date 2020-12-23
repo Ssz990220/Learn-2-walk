@@ -7,6 +7,12 @@ from pybulletgym.envs.roboschool.envs.locomotion.humanoid_env import HumanoidBul
 def env_creator(env_config):
     return HumanoidBulletEnv()
 
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--ckpt',type=str)
+args = parser.parse_args()
+
 register_env('HumanoidPyBullet-v0',env_creator)
 config={"env":'HumanoidPyBullet-v0',
             'framework':'tf',
@@ -24,8 +30,10 @@ config={"env":'HumanoidPyBullet-v0',
             'batch_mode':'complete_episodes',
             'observation_filter':'MeanStdFilter',
             'num_gpus':0}
-checkpoint_path = '.result_pool/checkpoint_224/checkpoint-224'
-ray.init(object_store_memory=78643200)
+
+checkpoint_path = 'run/PPO_HumanoidPyBullet-v0_13fc8_00000_0_2020-12-22_23-05-07/checkpoint_{}}/checkpoint-2{}'.format(args.ckpt, args.ckpt)
+
+ray.init()
 agent = ppo.PPOTrainer(env='HumanoidPyBullet-v0',config=config)
 agent.restore(checkpoint_path)
 
