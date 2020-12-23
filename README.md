@@ -37,6 +37,9 @@ if self.isRender:
 ## line 125 in class Camera
 def __init__(self):
     self._p = None      # replace the return line with this
+## line 131 in function move_and_look_at
+    distance = 2        # change the distance between camera and robot 
+                        # from 10 to 2 to get a close look
 ```
 To enable camera following in **HumanoidPyBulletEnv-v0**, do the following changes:
 ```python
@@ -45,6 +48,6 @@ To enable camera following in **HumanoidPyBulletEnv-v0**, do the following chang
     self.HUD(state, a, done)
     self.reward += sum(self.rewards)
     self.camera_adjust()        # add this line
-## line155 in function 'camera_adjust'
+## line 115 in function 'camera_adjust'
     x, y, z = self.robot.body_xyz
 ```
