@@ -51,7 +51,8 @@ To enable camera following in **HumanoidPyBulletEnv-v0**, do the following chang
 ## line 115 in function 'camera_adjust'
     x, y, z = self.robot.body_xyz
 ```
-The modification above also works for **Walker2DPyBulletEnv-v0**
+The modification above also works for **Walker2DPyBulletEnv-v0**.
+
 To change the background in the scene, which make easier to view how fast the robot walk, do the following changes:
 ```python
 ## in pybulletgym/envs/roboschool/scenes/stadium.py
