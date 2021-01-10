@@ -63,3 +63,36 @@ To change the background in the scene, which makes it easier to view how fast th
    foot_ground_object_names = set(["link_d0","link_d1","link_d2"])
 ```
 You are all set!
+## How to run the result
+### With Ray
+First, you need to activate your ray virtual environment.
+```bash
+conda activate ray 
+#or whatever name you give for your ray env
+```
+Then you can run our pretrained result by running this python script:
+```bash
+# in your terminal
+python ray_Evaluation --ckpt #ckpt #here #ckpt is the index of the checkpoint you want to load, to save space only ckpt1,30,45,60,75...225,235 is availble
+```
+Checkpoint 235 is the result of Humanoid trained with modified reward function in rllib.
+If you want to see the result with original reward function, you need to take some effort to read checkpoint_224 in folder 'result_pool'.
+
+**Good luck XD.**
+### With Stable Baselines
+You can also watch the Stable-baselines result:
+First, activate your stabe-baselines virtual-env
+```bash
+conda activate baselines
+```
+Then, run the following script
+```bash
+# in your terminal
+python main_Evaluation --alg sac --env w --file Walker2D_Faster_SAC
+# alg is the algorithm you choose
+# env is the environment to visualize, w indicates Walker2DPyBulletEnv-v0, h indicates HumanoidPyBulletEnv-v0
+# file is the checkpoint file
+# you can choose from the name of files in result pool
+```
+
+

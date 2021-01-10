@@ -31,7 +31,7 @@ config={"env":'HumanoidPyBullet-v0',
             'observation_filter':'MeanStdFilter',
             'num_gpus':0}
 
-checkpoint_path = 'run/PPO_HumanoidPyBullet-v0_13fc8_00000_0_2020-12-22_23-05-07/checkpoint_{}/checkpoint-{}'.format(args.ckpt, args.ckpt)
+checkpoint_path = 'result_pool/PPO_HumanoidPyBullet-v0_13fc8_00000_0_2020-12-22_23-05-07/checkpoint_{}/checkpoint-{}'.format(args.ckpt, args.ckpt)
 
 ray.init()
 agent = ppo.PPOTrainer(env='HumanoidPyBullet-v0',config=config)

@@ -1,0 +1,20 @@
+{
+  "batch_mode": "complete_episodes",
+  "clip_param": 0.2,
+  "env": "HumanoidPyBullet-v0",
+  "framework": "tf",
+  "gamma": 0.995,
+  "horizon": 5000,
+  "kl_coeff": 1.0,
+  "lambda": 0.95,
+  "lr": 0.001,
+  "model": {
+    "free_log_std": true
+  },
+  "num_gpus": 0,
+  "num_sgd_iter": 20,
+  "num_workers": 10,
+  "observation_filter": "MeanStdFilter",
+  "sgd_minibatch_size": 32768,
+  "train_batch_size": 320000
+}
