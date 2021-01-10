@@ -1,5 +1,16 @@
 # Big Data and Machine Intelligence
 Learning Bipedal With Deep Reinforcement Learning
+## Result
+Walker2D
+
+<img src="https://github.com/Ssz990220/Learn-2-walk/blob/master/video/Walker%20Result.gif" width="480">
+
+Humanoid
+
+|Original Reward function|Modifed Reward Function|
+|-------------------------|-------------------------|
+|<img src="https://github.com/Ssz990220/Learn-2-walk/blob/master/video/Humaonid_Original_Result.gif" width="480"> |  <img src="https://github.com/Ssz990220/Learn-2-walk/blob/master/video/Humanoid_Modified_Result.gif" width="480">|
+|<img src="https://github.com/Ssz990220/Learn-2-walk/blob/master/img/Humanoid_Original_Result.png" width="480">|<img src="https://github.com/Ssz990220/Learn-2-walk/blob/master/img/Humanoid_Modified_Result.png" width="480">|
 ## Environment in this project
 **numpy and cloudpickle version should be matched if you want to use the pretrained model**
 * Stable-baselines Environment:
